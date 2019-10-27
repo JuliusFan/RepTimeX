@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/exercise_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="15dp"
+        android:text="@string/label_exercise" />
+
+    <EditText
+        android:id="@+id/exercise_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/exercise_label"
+        android:layout_marginStart="10dp"
+        android:inputType="text"
+        android:maxLines="1"
+        android:hint="@string/hint_exercise" />
+
+    <TextView
+        android:id="@+id/duration_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/exercise_text"
+        android:layout_marginStart="15dp"
+        android:text="@string/label_duration" />
+
+    <EditText
+        android:id="@+id/duration_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/duration_label"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:ems="10"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/duration_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/duration_label"
+        android:layout_toEndOf="@+id/duration_text" />
+
+    <TextView
+        android:id="@+id/break_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/duration_text"
+        android:layout_marginStart="15dp"
+        android:text="@string/label_break" />
+
+    <EditText
+        android:id="@+id/break_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/break_label"
+        android:layout_marginStart="10dp"
+        android:ems="10"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/break_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/break_label"
+        android:layout_toEndOf="@+id/break_text" />
+
+    <TextView
+        android:id="@+id/weight_dist_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/break_text"
+        android:layout_marginStart="15dp"
+        android:text="@string/label_weight_dist" />
+
+    <EditText
+        android:id="@+id/weight_dist_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/weight_dist_label"
+        android:layout_marginStart="10dp"
+        android:ems="10"
+        android:inputType="number" />
+    <Spinner
+        android:id="@+id/weight_dist_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/weight_dist_label"
+        android:layout_toEndOf="@+id/weight_dist_text" />
+
+</RelativeLayout>

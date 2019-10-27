@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RepTimeX</string>
+    <string name="title_activity_create_routine">Create Routine</string>
+    <string name="add_exercise_dialog">Add Exercise</string>
+    <string name="save_routine">Save Set</string>
+    <string name="label_exercise">Exercise</string>
+    <string name="label_duration">Duration</string>
+    <string name="label_break">Break</string>
+    <string name="label_weight_dist">Weight/Distance</string>
+    <string name="hint_exercise">Name of exercise</string>
+    <string name="DialogYes">OK</string>
+    <string name="DialogNo">Cancel</string>
+    <string name="UnitSeconds">s</string>
+    <string name="UnitMinutes">m</string>
+    <string name="UnitPounds">lb</string>
+    <string name="UnitKg">kg</string>
+    <string name="UnitKm">km</string>
+    <string name="UnitMetres">m</string>
+    <string-array name="units_time">
+        <item>s</item>
+        <item>m</item>
+    </string-array>
+    <string-array name="units_weight_dist">
+        <item>lb</item>
+        <item>kg</item>
+        <item>m</item>
+        <item>km</item>
+    </string-array>
+
+</resources>
