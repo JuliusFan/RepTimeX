@@ -3,7 +3,7 @@
     <string name="app_name">RepTimeX</string>
     <string name="title_activity_create_routine">Create Routine</string>
     <string name="add_exercise_dialog">Add Exercise</string>
-    <string name="save_routine">Save Set</string>
+    <string name="save_routine">Save Routine</string>
     <string name="label_exercise">Exercise</string>
     <string name="label_duration">Duration</string>
     <string name="label_break">Break</string>
