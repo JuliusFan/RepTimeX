@@ -11,7 +11,6 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".CreateRoutineActivity">
-            android:label="@string/title_activity_create_routine"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

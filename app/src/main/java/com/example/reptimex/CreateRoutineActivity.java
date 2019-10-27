@@ -2,6 +2,7 @@ package com.example.reptimex;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -19,12 +20,17 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CreateRoutineActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     protected final static String ACTIVITY_NAME = "CreateRoutineActivity";
-    final ArrayList<Exercise> exerciseArray = new ArrayList<>();
+    protected final static String DATA_KEY = "exerciseArray";
+    ArrayList<Exercise> exerciseArray;
     ExerciseAdapter globalAdapter;
 
     @Override
@@ -32,6 +38,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_set);
         this.setTitle(R.string.title_activity_create_routine);
+
+        loadData();
 
         final ListView listview = findViewById(R.id.exercise_list);
         listview.setOnItemClickListener(this);
@@ -43,7 +51,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(ACTIVITY_NAME,"clicked save button");
+                Log.i(ACTIVITY_NAME, "clicked save button");
+                saveData();
                 CreateRoutineActivity.this.finish();
             }
         });
@@ -113,6 +122,25 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
             }
         });
 
+    }
+
+    private void saveData(){
+        SharedPreferences preferences = getSharedPreferences("sharedpref",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(this.exerciseArray);
+        editor.putString(DATA_KEY,json);
+        editor.apply();
+    }
+
+    private void loadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedpref",MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(DATA_KEY,null);
+        Type type = new TypeToken<ArrayList<Exercise>>() {}.getType();
+        this.exerciseArray = gson.fromJson(json, type);
+        if (this.exerciseArray == null)
+            this.exerciseArray = new ArrayList<>();
     }
 
     public void onItemClick(AdapterView l, View view, int position, long id){
