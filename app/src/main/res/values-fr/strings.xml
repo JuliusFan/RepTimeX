@@ -27,5 +27,6 @@
         <item>m</item>
         <item>km</item>
     </string-array>
-
+    <string name="createRoutine">Create Routine</string>
+    <string name="cancelTraining">Cancel Training</string>
 </resources>

@@ -22,23 +22,47 @@
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="411dp"
-        android:layout_height="75dp"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="459dp"
+        android:layout_height="133dp"
+        android:layout_below="@id/timer"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="582dp"
         android:clickable="false"
-        android:indeterminate="true"
+        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+        android:max="100"
+        android:progress="0"
+        android:scaleY="5"
+        android:verticalScrollbarPosition="defaultPosition"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="572dp" />
 
     <Button
         android:id="@+id/startTimer"
-        android:layout_width="110dp"
-        android:layout_height="72dp"
+        android:layout_width="153dp"
+        android:layout_height="73dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         tools:layout_editor_absoluteX="285dp"
         tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/createRoutine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/createRoutine" />
+
+    <Button
+        android:id="@+id/cancelTraining"
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="119dp"
+        android:layout_toEndOf="@id/createRoutine"
+        android:text="@string/cancelTraining" />
 
 </RelativeLayout>
