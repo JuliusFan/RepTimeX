@@ -65,4 +65,47 @@
         android:layout_toEndOf="@id/createRoutine"
         android:text="@string/cancelTraining" />
 
+
+    <TextView
+        android:id="@+id/countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:textSize="50sp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+    </TextView>
+    <Button
+        android:id="@+id/countdown_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/countdown"
+        android:layout_centerHorizontal="true"
+        android:text="Start" />
+    <TextView
+        android:id="@+id/current_exercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Exercise: [NULL]"
+        android:layout_above="@id/countdown"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+    <TextView
+        android:id="@+id/next_exercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next Exercise: [NULL]"
+        android:layout_below="@id/countdown_button"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <ListView
+        android:id="@+id/exercise_list_main"
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:gravity="center"
+        android:layout_below="@+id/countdown_button" />
+
+
+
 </RelativeLayout>
