@@ -9,6 +9,7 @@
     <string name="label_break">Break</string>
     <string name="label_weight_dist">Weight/Distance</string>
     <string name="hint_exercise">Name of exercise</string>
+    <string name="delete_exercise_button">Delete</string>
     <string name="DialogYes">OK</string>
     <string name="DialogNo">Cancel</string>
     <string name="UnitSeconds">s</string>

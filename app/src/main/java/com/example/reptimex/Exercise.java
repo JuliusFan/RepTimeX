@@ -44,4 +44,13 @@ public class Exercise {
     public String getWeightDistUnit() {
         return this.weightDistUnit;
     }
+
+    public int getDurationMS(){ // return duration in milliseconds
+        if (getDurationUnit().equals("s"))
+            return getDuration() * 1000;
+        else if (getDurationUnit().equals("m"))
+            return getDuration() * 60 * 1000;
+        else return 0;
+    }
+
 }

@@ -143,12 +143,12 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
             this.exerciseArray = new ArrayList<>();
     }
 
-    public void onItemClick(AdapterView l, View view, int position, long id){
+    public void onItemClick(AdapterView l, View view, final int position, long id){
         final int p = position;
         Exercise currentExercise = exerciseArray.get(p);
         AlertDialog.Builder exerciseBuilder = new AlertDialog.Builder(CreateRoutineActivity.this);
         LayoutInflater inflater = CreateRoutineActivity.this.getLayoutInflater();
-        final View v = inflater.inflate(R.layout.add_exercise_dialog, null);
+        final View v = inflater.inflate(R.layout.add_exercise_dialog_with_delete, null);
         exerciseBuilder.setView(v);
         exerciseBuilder.setTitle(R.string.add_exercise_dialog);
 
@@ -204,8 +204,18 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         });
         exerciseBuilder.setNegativeButton(R.string.DialogNo,null);
 
-        AlertDialog exerciseDialog = exerciseBuilder.create();
+        final AlertDialog exerciseDialog = exerciseBuilder.create();
         exerciseDialog.show();
+
+        final Button deleteButton = v.findViewById(R.id.delete_exercise);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exerciseArray.remove(position);
+                globalAdapter.notifyDataSetChanged();
+                exerciseDialog.dismiss();
+            }
+        });
     }
 
     private class ExerciseAdapter extends ArrayAdapter<String>{

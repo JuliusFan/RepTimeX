@@ -298,5 +298,4 @@ public class Progress extends AppCompatActivity {
 
     }
 
-
 }
