@@ -4,9 +4,9 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/exercise_item_text"
+        android:id="@+id/list_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ExerciseName"
+        android:text="ItemName"
         android:textSize="24sp" />
 </LinearLayout>

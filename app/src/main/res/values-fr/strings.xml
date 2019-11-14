@@ -3,13 +3,16 @@
     <string name="app_name">RepTimeX</string>
     <string name="title_activity_create_routine">Create Routine</string>
     <string name="add_exercise_dialog">Add Exercise</string>
+    <string name="delete_routine">Delete Routine</string>
     <string name="save_routine">Save Routine</string>
+    <string name="button_back">Back</string>
     <string name="label_exercise">Exercise</string>
     <string name="label_duration">Duration</string>
     <string name="label_break">Break</string>
     <string name="label_weight_dist">Weight/Distance</string>
     <string name="hint_exercise">Name of exercise</string>
     <string name="delete_exercise_button">Delete</string>
+    <string name="delete_dialog">Delete this routine?</string>
     <string name="DialogYes">OK</string>
     <string name="DialogNo">Cancel</string>
     <string name="UnitSeconds">s</string>
@@ -18,6 +21,8 @@
     <string name="UnitKg">kg</string>
     <string name="UnitKm">km</string>
     <string name="UnitMetres">m</string>
+    <string name="ToastSave">Routine saved</string>
+    <string name="SnackbarAdd">Exercise Added</string>
     <string-array name="units_time">
         <item>s</item>
         <item>m</item>
@@ -30,4 +35,6 @@
     </string-array>
     <string name="createRoutine">Create Routine</string>
     <string name="cancelTraining">Cancel Training</string>
+    <string name="routine_name">Routine name</string>
+    <string name="all_routines">All Routines</string>
 </resources>

@@ -26,7 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class Progress extends AppCompatActivity {
+public class TrainingActivity extends AppCompatActivity {
 
     EditText timer;
     Button startTimer;
@@ -69,7 +69,7 @@ public class Progress extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_progress);
+        setContentView(R.layout.activity_training);
 
         timer = findViewById(R.id.timer);
         startTimer = findViewById(R.id.startTimer);
@@ -144,7 +144,7 @@ public class Progress extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Cheese", "Cheese");
-                Intent intent = new Intent(Progress.this, CreateRoutineActivity.class);
+                Intent intent = new Intent(TrainingActivity.this, RoutinesActivity.class);
                 startActivityForResult(intent, 10);
             }
         });
@@ -212,14 +212,7 @@ public class Progress extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
     //dan
-
 
     public void startTimer(){
         stopwatch = new CountDownTimer(timeleftmilliseconds,1000) {
@@ -289,9 +282,9 @@ public class Progress extends AppCompatActivity {
         }
 
         public View getView(int position, View convertView, ViewGroup Parent){
-            LayoutInflater inflater = Progress.this.getLayoutInflater();
-            View v = inflater.inflate(R.layout.exercise_item,null);
-            TextView name = v.findViewById(R.id.exercise_item_text);
+            LayoutInflater inflater = TrainingActivity.this.getLayoutInflater();
+            View v = inflater.inflate(R.layout.list_item,null);
+            TextView name = v.findViewById(R.id.list_item_text);
             name.setText(getItem(position));
             return v;
         }

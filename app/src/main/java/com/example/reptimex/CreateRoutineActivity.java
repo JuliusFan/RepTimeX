@@ -1,7 +1,9 @@
 package com.example.reptimex;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -19,27 +21,38 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CreateRoutineActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     protected final static String ACTIVITY_NAME = "CreateRoutineActivity";
-    protected final static String DATA_KEY = "exerciseArray";
+    protected final static String DATA_KEY = "routineArray";
+    protected final static String DELETE_KEY = "delete";
     ArrayList<Exercise> exerciseArray;
+    ArrayList<Routine> routineArrayList = RoutinesActivity.routineArrayList;
+    String name;
     ExerciseAdapter globalAdapter;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_set);
+        setContentView(R.layout.activity_create_routine);
         this.setTitle(R.string.title_activity_create_routine);
 
-        loadData();
+        Intent intent = getIntent();
+        this.position = intent.getIntExtra("position",-1);
+
+        if (this.position == -1){
+            this.exerciseArray = new ArrayList<>();
+        } else {
+            this.exerciseArray = routineArrayList.get(this.position).getExercises();
+        }
 
         final ListView listview = findViewById(R.id.exercise_list);
         listview.setOnItemClickListener(this);
@@ -47,20 +60,57 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         this.globalAdapter = exerciseAdapter;
         listview.setAdapter(exerciseAdapter);
 
+        final EditText nameET = findViewById(R.id.routine_name);
+        if (this.position != -1){
+            nameET.setText(routineArrayList.get(this.position).toString());
+        }
+
         final Button saveButton = findViewById(R.id.button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(ACTIVITY_NAME, "clicked save button");
+                name = nameET.getText().toString();
+                int text = R.string.ToastSave;
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(CreateRoutineActivity.this, text, duration);
+                toast.show();
+
                 saveData();
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(DELETE_KEY,-1);
+                setResult(Activity.RESULT_OK,resultIntent);
                 CreateRoutineActivity.this.finish();
+            }
+        });
+
+        final Button deleteButton = findViewById(R.id.button_delete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(ACTIVITY_NAME, "clicked delete button");
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateRoutineActivity.this);
+                builder.setTitle(R.string.delete_dialog);
+                builder.setPositiveButton(R.string.DialogYes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra(DELETE_KEY,position);
+                        setResult(Activity.RESULT_OK,resultIntent);
+                        CreateRoutineActivity.this.finish();
+                    }
+                });
+                builder.setNegativeButton(R.string.DialogNo, null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
         final Button addExerciseButton = findViewById(R.id.button_add);
         addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
 
                 AlertDialog.Builder exerciseBuilder = new AlertDialog.Builder(CreateRoutineActivity.this);
                 LayoutInflater inflater = CreateRoutineActivity.this.getLayoutInflater();
@@ -90,6 +140,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String name = exerciseET.getText().toString();
+                        if (name.equals(""))
+                            name = getString(R.string.label_exercise);
                         int duration, breakDuration, weightDist;
                         try{
                             duration = Integer.parseInt(durationET.getText().toString());
@@ -112,6 +164,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
                         Exercise newExercise = new Exercise(name, duration, durationUnit, breakDuration, breakUnit, weightDist, weightDistUnit);
                         exerciseArray.add(newExercise);
                         exerciseAdapter.notifyDataSetChanged();
+                        Snackbar.make(view,R.string.SnackbarAdd,Snackbar.LENGTH_SHORT).show();
                     }
                 });
                 exerciseBuilder.setNegativeButton(R.string.DialogNo,null);
@@ -125,22 +178,16 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
     }
 
     private void saveData(){
+        if (this.position == -1)
+            routineArrayList.add(new Routine(this.name, this.exerciseArray));
+        else
+            routineArrayList.set(this.position, new Routine(this.name, this.exerciseArray));
         SharedPreferences preferences = getSharedPreferences("sharedpref",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(this.exerciseArray);
+        String json = gson.toJson(routineArrayList);
         editor.putString(DATA_KEY,json);
         editor.apply();
-    }
-
-    private void loadData(){
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedpref",MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(DATA_KEY,null);
-        Type type = new TypeToken<ArrayList<Exercise>>() {}.getType();
-        this.exerciseArray = gson.fromJson(json, type);
-        if (this.exerciseArray == null)
-            this.exerciseArray = new ArrayList<>();
     }
 
     public void onItemClick(AdapterView l, View view, final int position, long id){
@@ -225,6 +272,9 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         }
 
         public int getCount(){
+            if(exerciseArray==null){
+                exerciseArray = new ArrayList<>();
+            }
             return exerciseArray.size();
         }
 
@@ -234,8 +284,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
 
         public View getView(int position, View convertView, ViewGroup Parent){
             LayoutInflater inflater = CreateRoutineActivity.this.getLayoutInflater();
-            View v = inflater.inflate(R.layout.exercise_item,null);
-            TextView name = v.findViewById(R.id.exercise_item_text);
+            View v = inflater.inflate(R.layout.list_item,null);
+            TextView name = v.findViewById(R.id.list_item_text);
             name.setText(getItem(position));
             return v;
         }
