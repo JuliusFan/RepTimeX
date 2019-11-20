@@ -15,6 +15,7 @@
     <string name="delete_dialog">Delete this routine?</string>
     <string name="DialogYes">OK</string>
     <string name="DialogNo">Cancel</string>
+    <string name="DialogClose">Close</string>
     <string name="UnitSeconds">s</string>
     <string name="UnitMinutes">m</string>
     <string name="UnitPounds">lb</string>
@@ -22,7 +23,9 @@
     <string name="UnitKm">km</string>
     <string name="UnitMetres">m</string>
     <string name="ToastSave">Routine saved</string>
+    <string name="ToastSaveData">Routines saved</string>
     <string name="SnackbarAdd">Exercise Added</string>
+    <string name="SnackbarCreateRoutine">Creating routine</string>
     <string-array name="units_time">
         <item>s</item>
         <item>m</item>
@@ -37,4 +40,7 @@
     <string name="cancelTraining">Cancel Training</string>
     <string name="routine_name">Routine name</string>
     <string name="all_routines">All Routines</string>
+    <string name="menu_about">Sur</string>
+    <string name="routines_info">Press CREATE ROUTINE to create a new routine and add it to the list of routines.\nClick on a routine in the list to edit.\nPress BACK to go back.\nAuthor: Julius Fan\nActivity Version: 1.0</string>
+    <string name="exercises_info">Press ADD EXERCISE to add a new exercise to this routine.\nPress DELETE ROUTINE to delete this routine.\nPress SAVE ROUTINE to save this routine and go back.\nClick on an exercise in the list to edit it.\nAuthor: Julius Fan\nActivity Version: 1.0</string>
 </resources>

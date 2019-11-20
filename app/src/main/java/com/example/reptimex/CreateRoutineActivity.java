@@ -9,9 +9,12 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,12 +42,18 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
     String name;
     ExerciseAdapter globalAdapter;
     int position;
+    private final int MAX_SIZE = 10;
+    private ProgressBar progressBar;
+    private Button addExerciseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_routine);
         this.setTitle(R.string.title_activity_create_routine);
+
+        Toolbar toolbar = findViewById(R.id.exercises_toolbar);
+        setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         this.position = intent.getIntExtra("position",-1);
@@ -107,11 +117,12 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
             }
         });
 
-        final Button addExerciseButton = findViewById(R.id.button_add);
+        addExerciseButton = findViewById(R.id.button_add);
+        disableButtonCheck();
         addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-
+                Log.i(ACTIVITY_NAME, Integer.toString(exerciseArray.size()));
                 AlertDialog.Builder exerciseBuilder = new AlertDialog.Builder(CreateRoutineActivity.this);
                 LayoutInflater inflater = CreateRoutineActivity.this.getLayoutInflater();
                 final View v = inflater.inflate(R.layout.add_exercise_dialog, null);
@@ -164,6 +175,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
                         Exercise newExercise = new Exercise(name, duration, durationUnit, breakDuration, breakUnit, weightDist, weightDistUnit);
                         exerciseArray.add(newExercise);
                         exerciseAdapter.notifyDataSetChanged();
+                        updateProgressBar();
+                        disableButtonCheck();
                         Snackbar.make(view,R.string.SnackbarAdd,Snackbar.LENGTH_SHORT).show();
                     }
                 });
@@ -171,10 +184,22 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
 
                 AlertDialog exerciseDialog = exerciseBuilder.create();
                 exerciseDialog.show();
-
             }
         });
 
+        this.progressBar = findViewById(R.id.exercise_bar);
+        updateProgressBar();
+    }
+
+    private void updateProgressBar(){
+        this.progressBar.setProgress(this.exerciseArray.size() * 100 / MAX_SIZE);
+    }
+
+    private void disableButtonCheck(){
+        if (this.exerciseArray.size()==MAX_SIZE)
+            addExerciseButton.setClickable(false);
+        else
+            addExerciseButton.setClickable(true);
     }
 
     private void saveData(){
@@ -260,9 +285,32 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
             public void onClick(View view) {
                 exerciseArray.remove(position);
                 globalAdapter.notifyDataSetChanged();
+                updateProgressBar();
+                disableButtonCheck();
                 exerciseDialog.dismiss();
             }
         });
+    }
+
+    public boolean onCreateOptionsMenu (Menu m){
+        getMenuInflater().inflate(R.menu.routines_menu,m);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem mi){
+        int id = mi.getItemId();
+        switch(id) {
+            case R.id.action_about:
+                AlertDialog.Builder aboutDialogBuilder = new AlertDialog.Builder(this);
+                LayoutInflater inflater = this.getLayoutInflater();
+                final View v = inflater.inflate(R.layout.exercises_about_dialog, null);
+                aboutDialogBuilder.setView(v);
+                aboutDialogBuilder.setPositiveButton(R.string.DialogClose,null);
+                AlertDialog aboutDialog = aboutDialogBuilder.create();
+                aboutDialog.show();
+                break;
+        }
+        return true;
     }
 
     private class ExerciseAdapter extends ArrayAdapter<String>{
@@ -272,9 +320,11 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         }
 
         public int getCount(){
+            /*
             if(exerciseArray==null){
                 exerciseArray = new ArrayList<>();
             }
+            */
             return exerciseArray.size();
         }
 
