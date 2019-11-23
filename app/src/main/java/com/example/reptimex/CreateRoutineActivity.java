@@ -81,6 +81,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
             public void onClick(View view) {
                 Log.i(ACTIVITY_NAME, "clicked save button");
                 name = nameET.getText().toString();
+                if (name.equals(""))
+                    name = "Routine";
                 int text = R.string.ToastSave;
                 int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(CreateRoutineActivity.this, text, duration);
