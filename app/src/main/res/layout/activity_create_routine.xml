@@ -54,6 +54,14 @@
         android:text="@string/delete_routine" />
 
     <Button
+        android:id="@+id/button_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_delete"
+        android:layout_toStartOf="@id/button_save"
+        android:text="@string/button_start" />
+
+    <Button
         android:id="@+id/button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

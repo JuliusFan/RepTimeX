@@ -83,10 +83,6 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
                 name = nameET.getText().toString();
                 if (name.equals(""))
                     name = "Routine";
-                int text = R.string.ToastSave;
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(CreateRoutineActivity.this, text, duration);
-                toast.show();
 
                 saveData();
 
@@ -116,6 +112,20 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
                 builder.setNegativeButton(R.string.DialogNo, null);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+
+        final Button startButton = findViewById(R.id.button_start);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CreateRoutineActivity.this, TrainingActivity.class);
+                intent.putExtra("index", position);
+                name = nameET.getText().toString();
+                if (name.equals(""))
+                    name = "Routine";
+                saveData();
+                startActivity(intent);
             }
         });
 
@@ -215,6 +225,11 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         String json = gson.toJson(routineArrayList);
         editor.putString(DATA_KEY,json);
         editor.apply();
+
+        int text = R.string.ToastSave;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(CreateRoutineActivity.this, text, duration);
+        toast.show();
     }
 
     public void onItemClick(AdapterView l, View view, final int position, long id){
@@ -322,11 +337,6 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         }
 
         public int getCount(){
-            /*
-            if(exerciseArray==null){
-                exerciseArray = new ArrayList<>();
-            }
-            */
             return exerciseArray.size();
         }
 

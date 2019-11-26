@@ -2,10 +2,12 @@
 <resources>
     <string name="app_name">RepTimeX</string>
     <string name="title_activity_create_routine">Create Routine</string>
+    <string name="title_activity_routines">All Routines</string>
     <string name="add_exercise_dialog">Add Exercise</string>
     <string name="delete_routine">Delete Routine</string>
     <string name="save_routine">Save Routine</string>
     <string name="button_back">Back</string>
+    <string name="button_start">Start Routine</string>
     <string name="label_exercise">Exercise</string>
     <string name="label_duration">Duration</string>
     <string name="label_break">Break</string>
@@ -23,9 +25,9 @@
     <string name="UnitKm">km</string>
     <string name="UnitMetres">m</string>
     <string name="ToastSave">Routine saved</string>
-    <string name="ToastSaveData">Routines saved</string>
+    <string name="ToastCreateRoutine">Creating routine</string>
     <string name="SnackbarAdd">Exercise Added</string>
-    <string name="SnackbarCreateRoutine">Creating routine</string>
+    <string name="SnackbarSaveData">Routines saved</string>
     <string-array name="units_time">
         <item>s</item>
         <item>m</item>
