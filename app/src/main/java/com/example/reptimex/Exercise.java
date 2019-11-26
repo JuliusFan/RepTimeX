@@ -53,4 +53,13 @@ public class Exercise {
         else return 0;
     }
 
+    public int getBreakDurationMS(){
+        if (getBreakUnit().equals("s"))
+            return getBreakDuration() * 1000;
+        else if (getBreakUnit().equals("m"))
+            return getBreakDuration() * 60 * 1000;
+        else return 0;
+    }
+
+
 }
