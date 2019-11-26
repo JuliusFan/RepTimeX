@@ -45,6 +45,7 @@ public class RoutinesActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routines);
+        this.setTitle(R.string.title_activity_routines);
 
         loadData();
 
@@ -61,7 +62,10 @@ public class RoutinesActivity extends AppCompatActivity implements AdapterView.O
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSnackBar(RoutinesActivity.this, R.string.SnackbarCreateRoutine);
+                int text = R.string.ToastCreateRoutine;
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(RoutinesActivity.this, text, duration);
+                toast.show();
                 Intent intent = new Intent(RoutinesActivity.this, CreateRoutineActivity.class);
                 startActivityForResult(intent,10);
             }
@@ -73,11 +77,7 @@ public class RoutinesActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onClick(View view) {
                 saveData();
-                int text = R.string.ToastSaveData;
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(RoutinesActivity.this, text, duration);
-                toast.show();
-                RoutinesActivity.this.finish();
+                showSnackBar(RoutinesActivity.this, R.string.SnackbarSaveData);
             }
         });
 
