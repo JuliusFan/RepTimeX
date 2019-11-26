@@ -6,75 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".TrainingActivity">
 
-    <EditText
-        android:id="@+id/timer"
-        android:layout_width="255dp"
-        android:layout_height="73dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:importantForAutofill="no"
-        android:inputType="time"
-        tools:ignore="labelFor"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="411dp"
-        android:layout_height="133dp"
-        android:layout_below="@id/timer"
-        android:layout_alignParentStart="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="582dp"
-        android:clickable="false"
-        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
-        android:max="100"
-        android:progress="0"
-        android:scaleY="5"
-        android:verticalScrollbarPosition="defaultPosition"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="572dp" />
-
-    <Button
-        android:id="@+id/startTimer"
-        android:layout_width="153dp"
-        android:layout_height="73dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        tools:layout_editor_absoluteX="285dp"
-        tools:layout_editor_absoluteY="16dp" />
-
-    <Button
-        android:id="@+id/createRoutine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:text="@string/createRoutine" />
-
-    <Button
-        android:id="@+id/cancelTraining"
-        android:layout_width="155dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="119dp"
-        android:layout_toEndOf="@id/createRoutine"
-        android:text="@string/cancelTraining" />
-
-
     <TextView
         android:id="@+id/countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00"
+        android:text="10:00"
         android:textSize="50sp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
+
+
     </TextView>
+
     <Button
         android:id="@+id/countdown_button"
         android:layout_width="wrap_content"
@@ -82,30 +25,25 @@
         android:layout_below="@id/countdown"
         android:layout_centerHorizontal="true"
         android:text="Start" />
+
+
+
     <TextView
         android:id="@+id/current_exercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Current Exercise: [NULL]"
+        android:text="Current Exercise: [placeholder]"
         android:layout_above="@id/countdown"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
+
     <TextView
-        android:id="@+id/next_exercise"
+        android:id="@+id/routine_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next Exercise: [NULL]"
-        android:layout_below="@id/countdown_button"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
-
-    <ListView
-        android:id="@+id/exercise_list_main"
-        android:layout_width="match_parent"
-        android:layout_height="155dp"
-        android:gravity="center"
-        android:layout_below="@+id/countdown_button" />
-
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="175dp"
+        android:text="TextView" />
 
 
 </RelativeLayout>

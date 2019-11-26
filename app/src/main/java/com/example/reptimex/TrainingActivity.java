@@ -27,77 +27,50 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class TrainingActivity extends AppCompatActivity {
-
-    EditText timer;
-    Button startTimer;
-    Button createRoutine;
-    Button cancelTraining;
-    long startTime;
-    long originalStartTime;
-    ProgressBar progressBar;
-
-
-
-    //supposed to be current exercise, then when on to next exercise, increments by 1 until exerciseArray,size();
-    int current_index = 0;
     private TextView countDownText;
     private Button countdownButton;
+    private TextView workOutText;
+    private int index = 0;
+    private int routineNum=0;
 
+    private CountDownTimer timer;
 
-
-    private TextView currentexercise;
-    private TextView nextexercise;
-    private CountDownTimer stopwatch;
-
-
-    //hard coded 10 minutes
     private long timeleftmilliseconds = 600000;
-
-   ExerciseAdapter globalAdapter;
-
-
-
     private boolean isTimerRunning;
+    private TextView currentExercise;
 
-    protected final static String DATA_KEY = "exerciseArray";
+
+
+    ArrayList<Routine> routineArrayList = RoutinesActivity.routineArrayList;
+
+    Routine current;
     ArrayList<Exercise> exerciseArray;
-    //CreateRoutineActivity.ExerciseAdapter globalAdapter;
 
-
-
-    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
-
-        timer = findViewById(R.id.timer);
-        startTimer = findViewById(R.id.startTimer);
-        createRoutine = findViewById(R.id.createRoutine);
-        cancelTraining = findViewById(R.id.cancelTraining);
-        progressBar = findViewById(R.id.progressBar);
-
-
-        currentexercise=findViewById(R.id.current_exercise);
-        nextexercise = findViewById(R.id.next_exercise);
-
         countDownText = findViewById(R.id.countdown);
         countdownButton = findViewById(R.id.countdown_button);
+        currentExercise = findViewById(R.id.current_exercise);
+        workOutText = findViewById(R.id.routine_title);
 
 
-
-
-        loadData();
-        currentexercise.setText("Current Exercise: "+ exerciseArray.get(current_index).toString());
-        nextexercise.setText("Next Exercise: "+ exerciseArray.get(current_index+1).toString());
-
-
-        final ListView list = findViewById(R.id.exercise_list_main);
-        //list.setOnItemClickListener(this);
-        final ExerciseAdapter exerciseAdapter = new ExerciseAdapter(this);
-        this.globalAdapter = exerciseAdapter;
-        list.setAdapter(exerciseAdapter);
-
+        //
+//        Exercise pushup = new Exercise("Push Up", 5000, "Seconds", 5000, "Seconds", 0, null);
+//        Exercise situp = new Exercise("Sit Up", 5000, "Seconds", 5000, "Seconds", 0, null);
+//        Exercise lift = new Exercise("Bench Press", 5000, "Seconds", 5000, "Seconds", 100, "lbs");
+//        ArrayList<Exercise> Exercises = new ArrayList<Exercise>();
+//
+//        Routine routine1 = new Routine("Daily Workout", Exercises);
+//
+//
+//        ArrayList<Exercise> test = new ArrayList<Exercise>();
+        //final boolean add = test.add(pushup);
+        //this.Exercises.add(pushup);
+//        this.Exercises.add(pushup);
+//        this.Exercises.add(situp);
+//        this.Exercises.add(lift);
 
         countdownButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,116 +79,36 @@ public class TrainingActivity extends AppCompatActivity {
             }
         });
 
+        current = routineArrayList.get(routineNum);
+        exerciseArray = current.getExercises();
 
-        timer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Log.d("Cheese", "Cheese");
-            }
-        });
-        startTime = 20*60*1000;
-        originalStartTime = startTime;
-        // Hard coding setting time
-        long millis = startTime;
-        int showMils = (int) (millis % 1000);
-        int seconds = (int) (millis / 1000);
-        int minutes = seconds / 60;
-        seconds = seconds % 60;
-        timer.setText(String.format("%02d:%02d:%03d", minutes, seconds, showMils));
+        workOutText.setText(current.toString());
 
-        startTimer.setText("Start Timer");
-        startTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startTimer = (Button) v;
-                if (startTimer.getText().equals("Stop Timer")) {
-                    timerHandler.removeCallbacks(timerRunnable);
-                    startTimer.setText("Start Timer");
-                } else {
-                    startTime = System.currentTimeMillis();
-                    timerHandler.postDelayed(timerRunnable, 0);
-                    startTimer.setText("Stop Timer");
-                }
-            }
-        });
+        
+        currentExercise.setText("Current Exercise: "+ exerciseArray.get((index)).toString()+ " "+ exerciseArray.get((index)).getDuration());
 
-        // GOTO Create Routine (Julius)
-        createRoutine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Cheese", "Cheese");
-                Intent intent = new Intent(TrainingActivity.this, RoutinesActivity.class);
-                startActivityForResult(intent, 10);
-            }
-        });
-
-        // Ends program or resets timer?
-        cancelTraining.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startTime = originalStartTime;
-                long millis = startTime;
-                int showMils = (int) (millis % 1000);
-                int seconds = (int) (millis / 1000);
-                int minutes = seconds / 60;
-                seconds = seconds % 60;
-                timer.setText(String.format("%02d:%02d:%03d", minutes, seconds, showMils));
-            }
-        });
+        timeleftmilliseconds=exerciseArray.get((index)).getDurationMS();
 
 
+        int minutes = (int) timeleftmilliseconds/60000;
+        int seconds = (int) timeleftmilliseconds%60000/1000;
 
-
+        String timelefttext = ""+minutes+":";
+        if (seconds<10)timelefttext+="0" ;
+        timelefttext+=seconds;
+        countDownText.setText(timelefttext);
     }
 
-    Handler timerHandler = new Handler();
-    Runnable timerRunnable = new Runnable() {
-        @SuppressLint("DefaultLocale")
-        @Override
-        public void run() {
-            long millis = System.currentTimeMillis() - startTime;
-            int showMils = (int) (millis % 1000);
-            int seconds = (int) (millis / 1000);
-            int minutes = seconds / 60;
-            seconds = seconds % 60;
-
-            timer.setText(String.format("%02d:%02d:%03d", minutes, seconds, showMils));
-            progressBar.setProgress(seconds);
-
-            timerHandler.postDelayed(this, 0);
+    public void startStop(){
+        if(isTimerRunning) {
+            stopTimer();
+        }else {
+            startTimer();
         }
-    };
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void onPause() {
-        super.onPause();
-        timerHandler.removeCallbacks(timerRunnable);
-        startTimer.setText("Start Timer");
-    }
-    public void onResume(){
-        super.onResume();
-        loadData();
-
-        final ListView list = findViewById(R.id.exercise_list_main);
-        //list.setOnItemClickListener(this);
-        final ExerciseAdapter exerciseAdapter = new ExerciseAdapter(this);
-        this.globalAdapter = exerciseAdapter;
-        list.setAdapter(exerciseAdapter);
 
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        timerHandler.removeCallbacks(timerRunnable);
-    }
-
-
-    //dan
-
     public void startTimer(){
-        stopwatch = new CountDownTimer(timeleftmilliseconds,1000) {
+        timer = new CountDownTimer(timeleftmilliseconds,1000) {
             @Override
             public void onTick(long l) {
                 timeleftmilliseconds=l;
@@ -224,19 +117,54 @@ public class TrainingActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                index++;
 
+                if (index<exerciseArray.size()) {
+                    currentExercise.setText("Current Exercise: " + exerciseArray.get((index)).toString() + " " + exerciseArray.get((index)).getDuration());
+                    timeleftmilliseconds = exerciseArray.get((index)).getDurationMS();
+
+                    int minutes = (int) timeleftmilliseconds / 60000;
+                    int seconds = (int) timeleftmilliseconds % 60000 / 1000;
+
+                    String timelefttext = "" + minutes + ":";
+                    if (seconds < 10) timelefttext += "0";
+                    timelefttext += seconds;
+                    countDownText.setText(timelefttext);
+
+
+                    timer.start();
+                }
+                else{
+                    countdownButton.setText("Restart");
+                    index=0;
+                    timeleftmilliseconds = exerciseArray.get((index)).getDurationMS();
+                    currentExercise.setText("Current Exercise: " + exerciseArray.get((index)).toString() + " " + exerciseArray.get((index)).getDuration());
+
+                    int minutes = (int) timeleftmilliseconds / 60000;
+                    int seconds = (int) timeleftmilliseconds % 60000 / 1000;
+
+                    String timelefttext = "" + minutes + ":";
+                    if (seconds < 10) timelefttext += "0";
+                    timelefttext += seconds;
+                    countDownText.setText(timelefttext);
+
+                }
+                //countdownButton.setText("Restart");
             }
+
+
         }.start();
         countdownButton.setText("PAUSE");
         isTimerRunning=true;
     }
+
     public void stopTimer(){
-        stopwatch.cancel();
+        timer.cancel();
         isTimerRunning=false;
         countdownButton.setText("START");
+
     }
 
-    //changes the text of the timer textview
     public void updateTimer(){
         int minutes = (int) timeleftmilliseconds/60000;
         int seconds = (int) timeleftmilliseconds%60000/1000;
@@ -246,49 +174,4 @@ public class TrainingActivity extends AppCompatActivity {
         timelefttext+=seconds;
         countDownText.setText(timelefttext);
     }
-    //pause function for timer
-    public void startStop() {
-        if (isTimerRunning) {
-            stopTimer();
-        } else {
-            startTimer();
-        }
-
-    }
-
-    private void loadData(){
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedpref",MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(DATA_KEY,null);
-        Type type = new TypeToken<ArrayList<Exercise>>() {}.getType();
-        this.exerciseArray = gson.fromJson(json, type);
-        if (this.exerciseArray == null)
-            this.exerciseArray = new ArrayList<>();
-    }
-
-
-    private class ExerciseAdapter extends ArrayAdapter<String> {
-
-        public ExerciseAdapter(Context context){
-            super(context, 0);
-        }
-
-        public int getCount(){
-            return exerciseArray.size();
-        }
-
-        public String getItem(int position){
-            return exerciseArray.get(position).toString();
-        }
-
-        public View getView(int position, View convertView, ViewGroup Parent){
-            LayoutInflater inflater = TrainingActivity.this.getLayoutInflater();
-            View v = inflater.inflate(R.layout.list_item,null);
-            TextView name = v.findViewById(R.id.list_item_text);
-            name.setText(getItem(position));
-            return v;
-        }
-
-    }
-
 }
