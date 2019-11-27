@@ -56,6 +56,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
+
+
         this.position = intent.getIntExtra("position",-1);
 
         if (this.position == -1){

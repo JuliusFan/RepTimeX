@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,8 +40,6 @@ public class TrainingActivity extends AppCompatActivity {
     private boolean isTimerRunning;
     private TextView currentExercise;
 
-
-
     ArrayList<Routine> routineArrayList = RoutinesActivity.routineArrayList;
 
     Routine current;
@@ -48,29 +47,15 @@ public class TrainingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
         countDownText = findViewById(R.id.countdown);
         countdownButton = findViewById(R.id.countdown_button);
         currentExercise = findViewById(R.id.current_exercise);
         workOutText = findViewById(R.id.routine_title);
+       // int id = Integer.parseInt(routineNum);
 
-
-        //
-//        Exercise pushup = new Exercise("Push Up", 5000, "Seconds", 5000, "Seconds", 0, null);
-//        Exercise situp = new Exercise("Sit Up", 5000, "Seconds", 5000, "Seconds", 0, null);
-//        Exercise lift = new Exercise("Bench Press", 5000, "Seconds", 5000, "Seconds", 100, "lbs");
-//        ArrayList<Exercise> Exercises = new ArrayList<Exercise>();
-//
-//        Routine routine1 = new Routine("Daily Workout", Exercises);
-//
-//
-//        ArrayList<Exercise> test = new ArrayList<Exercise>();
-        //final boolean add = test.add(pushup);
-        //this.Exercises.add(pushup);
-//        this.Exercises.add(pushup);
-//        this.Exercises.add(situp);
-//        this.Exercises.add(lift);
 
         countdownButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,22 +66,16 @@ public class TrainingActivity extends AppCompatActivity {
 
         current = routineArrayList.get(routineNum);
         exerciseArray = current.getExercises();
-
-        workOutText.setText(current.toString());
-
-        
-        currentExercise.setText("Current Exercise: "+ exerciseArray.get((index)).toString()+ " "+ exerciseArray.get((index)).getDuration());
-
+        workOutText.setText(routineArrayList.get(routineNum).toString());
+//
+//
+//
         timeleftmilliseconds=exerciseArray.get((index)).getDurationMS();
 
 
-        int minutes = (int) timeleftmilliseconds/60000;
-        int seconds = (int) timeleftmilliseconds%60000/1000;
+       currentExercise.setText("Current Exercise: "+ exerciseArray.get((index)).toString()+ " "+ timeleftmilliseconds);
 
-        String timelefttext = ""+minutes+":";
-        if (seconds<10)timelefttext+="0" ;
-        timelefttext+=seconds;
-        countDownText.setText(timelefttext);
+        updateTimer();
     }
 
     public void startStop(){
@@ -107,6 +86,7 @@ public class TrainingActivity extends AppCompatActivity {
         }
 
     }
+//
     public void startTimer(){
         timer = new CountDownTimer(timeleftmilliseconds,1000) {
             @Override
@@ -117,36 +97,58 @@ public class TrainingActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+
+                if (exerciseArray.get(index).getBreakDurationMS()>0){
+
+                    currentExercise.setText("Break" + exerciseArray.get((index)).getBreakDuration());
+
+                    //timeleftmilliseconds = (int) exerciseArray.get((index)).getBreakDurationMS();
+
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Break time",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    updateTimer();
+                    //startTimer();
+
+                }
+
+
                 index++;
+                timeleftmilliseconds=0;
+
+
 
                 if (index<exerciseArray.size()) {
-                    currentExercise.setText("Current Exercise: " + exerciseArray.get((index)).toString() + " " + exerciseArray.get((index)).getDuration());
-                    timeleftmilliseconds = exerciseArray.get((index)).getDurationMS();
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Exercise Complete",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
 
-                    int minutes = (int) timeleftmilliseconds / 60000;
-                    int seconds = (int) timeleftmilliseconds % 60000 / 1000;
+                    timeleftmilliseconds = (int) exerciseArray.get((index)).getDurationMS();
+                    currentExercise.setText("Current Exercise: " + exerciseArray.get((index)).toString() + " " + exerciseArray.get((index)).getDurationMS());
 
-                    String timelefttext = "" + minutes + ":";
-                    if (seconds < 10) timelefttext += "0";
-                    timelefttext += seconds;
-                    countDownText.setText(timelefttext);
+                    updateTimer();
+                    startTimer();
 
-
-                    timer.start();
                 }
+
+
                 else{
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Routine Complete",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    timer.cancel();
+                    isTimerRunning=false;
                     countdownButton.setText("Restart");
+                    //index=0;
                     index=0;
                     timeleftmilliseconds = exerciseArray.get((index)).getDurationMS();
-                    currentExercise.setText("Current Exercise: " + exerciseArray.get((index)).toString() + " " + exerciseArray.get((index)).getDuration());
+                    currentExercise.setText("Current Exercise: " + exerciseArray.get((index)).toString() + " " + exerciseArray.get((index)).getDurationMS());
 
-                    int minutes = (int) timeleftmilliseconds / 60000;
-                    int seconds = (int) timeleftmilliseconds % 60000 / 1000;
-
-                    String timelefttext = "" + minutes + ":";
-                    if (seconds < 10) timelefttext += "0";
-                    timelefttext += seconds;
-                    countDownText.setText(timelefttext);
+                    updateTimer();
 
                 }
                 //countdownButton.setText("Restart");
@@ -166,12 +168,15 @@ public class TrainingActivity extends AppCompatActivity {
     }
 
     public void updateTimer(){
+
+
         int minutes = (int) timeleftmilliseconds/60000;
         int seconds = (int) timeleftmilliseconds%60000/1000;
 
         String timelefttext = ""+minutes+":";
         if (seconds<10)timelefttext+="0" ;
         timelefttext+=seconds;
+
         countDownText.setText(timelefttext);
     }
 }
