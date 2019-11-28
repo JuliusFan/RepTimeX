@@ -38,7 +38,7 @@ public class TrainingActivity extends AppCompatActivity {
 
     private CountDownTimer timer;
 
-    private long timeleftmilliseconds = 600000;
+    private long timeleftmilliseconds = 500;
     private boolean isTimerRunning;
     private TextView currentExercise;
     int routineNum;
@@ -91,12 +91,14 @@ public class TrainingActivity extends AppCompatActivity {
 //
 //
 //
-        timeleftmilliseconds=current.getDurationMS();
+        if(current.getDurationMS()>0){
+            timeleftmilliseconds=current.getDurationMS();
+        }
 
         exercisecount= exerciseArray.size();
 
 
-       currentExercise.setText("Current Exercise: "+ current.toString());
+       currentExercise.setText(getString(R.string.label_current_exercise)+" "+ current.toString());
 
         updateTimer();
     }
@@ -121,19 +123,19 @@ public class TrainingActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "Exercise Complete",
+                        R.string.toast_exercise_done,
                         Toast.LENGTH_SHORT);
                 toast.show();
                 stopTimer();
                 if (hasbreak > 0) {
-                    toast = Toast.makeText(getApplicationContext(),
-                            "Break time",
+                    toast = Toast.makeText(getApplicationContext(),R.string.label_break
+                            ,
                             Toast.LENGTH_SHORT);
                     toast.show();
 
 
                     timeleftmilliseconds = (int) hasbreak;
-                    currentExercise.setText("Break");
+                    currentExercise.setText(R.string.label_break);
                     updateTimer();
                     hasbreak = 0;
                     startTimer();
@@ -143,7 +145,7 @@ public class TrainingActivity extends AppCompatActivity {
                     index++;
                     if (index < exercisecount) {
                         current = exerciseArray.get(index);
-                        currentExercise.setText("Current Exercise: " + exerciseArray.get((index)).toString());
+                        currentExercise.setText(getString(R.string.label_current_exercise)+" "+ exerciseArray.get((index)).toString());
                         timeleftmilliseconds = (int) current.getDurationMS();
                         if(current.getBreakDurationMS()>0){
                             hasbreak = current.getBreakDurationMS();
@@ -152,20 +154,18 @@ public class TrainingActivity extends AppCompatActivity {
                         startTimer();
                     }else{
                         if (hasbreak > 0) {
-                            toast = Toast.makeText(getApplicationContext(),
-                                    "Break time",
+                            toast = Toast.makeText(getApplicationContext(), R.string.label_break,
                                     Toast.LENGTH_SHORT);
                             toast.show();
 
                             timeleftmilliseconds = (int) hasbreak;
-                            currentExercise.setText("Break");
+                            currentExercise.setText(R.string.label_break);
                             updateTimer();
                             hasbreak = 0;
                             startTimer();
 
                         }else {
-                            toast = Toast.makeText(getApplicationContext(),
-                                    "Routine Completed",
+                            toast = Toast.makeText(getApplicationContext(),R.string.toast_routine_done,
                                     Toast.LENGTH_SHORT);
                             toast.show();
                             index = 0;
@@ -174,8 +174,8 @@ public class TrainingActivity extends AppCompatActivity {
                             if (current.getBreakDurationMS() > 0) {
                                 hasbreak = current.getBreakDurationMS();
                             }
-                            currentExercise.setText("Current Exercise: " + exerciseArray.get((index)).toString());
-                            countdownButton.setText("RESTART");
+                            currentExercise.setText(getString(R.string.label_current_exercise)+" "+exerciseArray.get((index)).toString());
+                            countdownButton.setText(R.string.restart_button);
                             timeleftmilliseconds = current.getDurationMS();
                             updateTimer();
                         }
@@ -192,14 +192,14 @@ public class TrainingActivity extends AppCompatActivity {
 
 
         }.start();
-        countdownButton.setText("PAUSE");
+        countdownButton.setText(R.string.pause_button);
         isTimerRunning=true;
     }
 
     public void stopTimer(){
         timer.cancel();
         isTimerRunning=false;
-        countdownButton.setText("START");
+        countdownButton.setText(R.string.button_start);
 
     }
 
