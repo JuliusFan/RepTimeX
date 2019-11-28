@@ -26,6 +26,7 @@
     <string name="UnitMetres">m</string>
     <string name="ToastSave">Routine saved</string>
     <string name="ToastCreateRoutine">Creating routine</string>
+    <string name="ToastEmptyExercises">Add exercises to this routine before starting training</string>
     <string name="SnackbarAdd">Exercise Added</string>
     <string name="SnackbarSaveData">Routines saved</string>
     <string-array name="units_time">

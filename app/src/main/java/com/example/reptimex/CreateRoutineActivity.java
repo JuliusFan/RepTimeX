@@ -121,13 +121,23 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CreateRoutineActivity.this, TrainingActivity.class);
-                intent.putExtra("index", position);
-                name = nameET.getText().toString();
-                if (name.equals(""))
-                    name = "Routine";
-                saveData();
-                startActivity(intent);
+                if (exerciseArray.size() > 0) {
+                    name = nameET.getText().toString();
+                    if (name.equals(""))
+                        name = "Routine";
+                    saveData();
+                    Intent intent = new Intent(CreateRoutineActivity.this, TrainingActivity.class);
+                    if (position == -1)
+                        position = routineArrayList.size()-1;
+                    intent.putExtra("index", position);
+                    startActivity(intent);
+                } else {
+                    int text = R.string.ToastEmptyExercises;
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(CreateRoutineActivity.this, text, duration);
+                    toast.show();
+                }
+
             }
         });
 
