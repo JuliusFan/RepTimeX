@@ -1,15 +1,20 @@
 package com.example.reptimex;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,29 +22,49 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CreateRoutineActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     protected final static String ACTIVITY_NAME = "CreateRoutineActivity";
-    protected final static String DATA_KEY = "exerciseArray";
+    protected final static String DATA_KEY = "routineArray";
+    protected final static String DELETE_KEY = "delete";
     ArrayList<Exercise> exerciseArray;
+    ArrayList<Routine> routineArrayList = RoutinesActivity.routineArrayList;
+    String name;
     ExerciseAdapter globalAdapter;
+    int position;
+    private final int MAX_SIZE = 10;
+    private ProgressBar progressBar;
+    private Button addExerciseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_set);
+        setContentView(R.layout.activity_create_routine);
         this.setTitle(R.string.title_activity_create_routine);
 
-        loadData();
+        Toolbar toolbar = findViewById(R.id.exercises_toolbar);
+        setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+
+
+        this.position = intent.getIntExtra("position",-1);
+
+        if (this.position == -1){
+            this.exerciseArray = new ArrayList<>();
+        } else {
+            this.exerciseArray = routineArrayList.get(this.position).getExercises();
+        }
 
         final ListView listview = findViewById(R.id.exercise_list);
         listview.setOnItemClickListener(this);
@@ -47,21 +72,81 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         this.globalAdapter = exerciseAdapter;
         listview.setAdapter(exerciseAdapter);
 
+        final EditText nameET = findViewById(R.id.routine_name);
+        if (this.position != -1){
+            nameET.setText(routineArrayList.get(this.position).toString());
+        }
+
         final Button saveButton = findViewById(R.id.button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(ACTIVITY_NAME, "clicked save button");
+                name = nameET.getText().toString();
+                if (name.equals(""))
+                    name = "Routine";
+
                 saveData();
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(DELETE_KEY,-1);
+                setResult(Activity.RESULT_OK,resultIntent);
                 CreateRoutineActivity.this.finish();
             }
         });
 
-        final Button addExerciseButton = findViewById(R.id.button_add);
-        addExerciseButton.setOnClickListener(new View.OnClickListener() {
+        final Button deleteButton = findViewById(R.id.button_delete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(ACTIVITY_NAME, "clicked delete button");
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateRoutineActivity.this);
+                builder.setTitle(R.string.delete_dialog);
+                builder.setPositiveButton(R.string.DialogYes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra(DELETE_KEY,position);
+                        setResult(Activity.RESULT_OK,resultIntent);
+                        CreateRoutineActivity.this.finish();
+                    }
+                });
+                builder.setNegativeButton(R.string.DialogNo, null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
 
+        final Button startButton = findViewById(R.id.button_start);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (exerciseArray.size() > 0) {
+                    name = nameET.getText().toString();
+                    if (name.equals(""))
+                        name = "Routine";
+                    saveData();
+                    Intent intent = new Intent(CreateRoutineActivity.this, TrainingActivity.class);
+                    if (position == -1)
+                        position = routineArrayList.size()-1;
+                    intent.putExtra("index", position);
+                    startActivity(intent);
+                } else {
+                    int text = R.string.ToastEmptyExercises;
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(CreateRoutineActivity.this, text, duration);
+                    toast.show();
+                }
+
+            }
+        });
+
+        addExerciseButton = findViewById(R.id.button_add);
+        disableButtonCheck();
+        addExerciseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                Log.i(ACTIVITY_NAME, Integer.toString(exerciseArray.size()));
                 AlertDialog.Builder exerciseBuilder = new AlertDialog.Builder(CreateRoutineActivity.this);
                 LayoutInflater inflater = CreateRoutineActivity.this.getLayoutInflater();
                 final View v = inflater.inflate(R.layout.add_exercise_dialog, null);
@@ -90,6 +175,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String name = exerciseET.getText().toString();
+                        if (name.equals(""))
+                            name = getString(R.string.label_exercise);
                         int duration, breakDuration, weightDist;
                         try{
                             duration = Integer.parseInt(durationET.getText().toString());
@@ -112,43 +199,57 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
                         Exercise newExercise = new Exercise(name, duration, durationUnit, breakDuration, breakUnit, weightDist, weightDistUnit);
                         exerciseArray.add(newExercise);
                         exerciseAdapter.notifyDataSetChanged();
+                        updateProgressBar();
+                        disableButtonCheck();
+                        Snackbar.make(view,R.string.SnackbarAdd,Snackbar.LENGTH_SHORT).show();
                     }
                 });
                 exerciseBuilder.setNegativeButton(R.string.DialogNo,null);
 
                 AlertDialog exerciseDialog = exerciseBuilder.create();
                 exerciseDialog.show();
-
             }
         });
 
+        this.progressBar = findViewById(R.id.exercise_bar);
+        updateProgressBar();
+    }
+
+    private void updateProgressBar(){
+        this.progressBar.setProgress(this.exerciseArray.size() * 100 / MAX_SIZE);
+    }
+
+    private void disableButtonCheck(){
+        if (this.exerciseArray.size()==MAX_SIZE)
+            addExerciseButton.setClickable(false);
+        else
+            addExerciseButton.setClickable(true);
     }
 
     private void saveData(){
+        if (this.position == -1)
+            routineArrayList.add(new Routine(this.name, this.exerciseArray));
+        else
+            routineArrayList.set(this.position, new Routine(this.name, this.exerciseArray));
         SharedPreferences preferences = getSharedPreferences("sharedpref",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(this.exerciseArray);
+        String json = gson.toJson(routineArrayList);
         editor.putString(DATA_KEY,json);
         editor.apply();
+
+        int text = R.string.ToastSave;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(CreateRoutineActivity.this, text, duration);
+        toast.show();
     }
 
-    private void loadData(){
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedpref",MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(DATA_KEY,null);
-        Type type = new TypeToken<ArrayList<Exercise>>() {}.getType();
-        this.exerciseArray = gson.fromJson(json, type);
-        if (this.exerciseArray == null)
-            this.exerciseArray = new ArrayList<>();
-    }
-
-    public void onItemClick(AdapterView l, View view, int position, long id){
+    public void onItemClick(AdapterView l, View view, final int position, long id){
         final int p = position;
         Exercise currentExercise = exerciseArray.get(p);
         AlertDialog.Builder exerciseBuilder = new AlertDialog.Builder(CreateRoutineActivity.this);
         LayoutInflater inflater = CreateRoutineActivity.this.getLayoutInflater();
-        final View v = inflater.inflate(R.layout.add_exercise_dialog, null);
+        final View v = inflater.inflate(R.layout.add_exercise_dialog_with_delete, null);
         exerciseBuilder.setView(v);
         exerciseBuilder.setTitle(R.string.add_exercise_dialog);
 
@@ -204,8 +305,41 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
         });
         exerciseBuilder.setNegativeButton(R.string.DialogNo,null);
 
-        AlertDialog exerciseDialog = exerciseBuilder.create();
+        final AlertDialog exerciseDialog = exerciseBuilder.create();
         exerciseDialog.show();
+
+        final Button deleteButton = v.findViewById(R.id.delete_exercise);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exerciseArray.remove(position);
+                globalAdapter.notifyDataSetChanged();
+                updateProgressBar();
+                disableButtonCheck();
+                exerciseDialog.dismiss();
+            }
+        });
+    }
+
+    public boolean onCreateOptionsMenu (Menu m){
+        getMenuInflater().inflate(R.menu.routines_menu,m);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem mi){
+        int id = mi.getItemId();
+        switch(id) {
+            case R.id.action_about:
+                AlertDialog.Builder aboutDialogBuilder = new AlertDialog.Builder(this);
+                LayoutInflater inflater = this.getLayoutInflater();
+                final View v = inflater.inflate(R.layout.exercises_about_dialog, null);
+                aboutDialogBuilder.setView(v);
+                aboutDialogBuilder.setPositiveButton(R.string.DialogClose,null);
+                AlertDialog aboutDialog = aboutDialogBuilder.create();
+                aboutDialog.show();
+                break;
+        }
+        return true;
     }
 
     private class ExerciseAdapter extends ArrayAdapter<String>{
@@ -224,8 +358,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements AdapterV
 
         public View getView(int position, View convertView, ViewGroup Parent){
             LayoutInflater inflater = CreateRoutineActivity.this.getLayoutInflater();
-            View v = inflater.inflate(R.layout.exercise_item,null);
-            TextView name = v.findViewById(R.id.exercise_item_text);
+            View v = inflater.inflate(R.layout.list_item,null);
+            TextView name = v.findViewById(R.id.list_item_text);
             name.setText(getItem(position));
             return v;
         }
