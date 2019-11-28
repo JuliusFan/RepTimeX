@@ -44,6 +44,15 @@
     <string name="routine_name">Routine name</string>
     <string name="all_routines">All Routines</string>
     <string name="menu_about">Sur</string>
-    <string name="routines_info">Press CREATE ROUTINE to create a new routine and add it to the list of routines.\nClick on a routine in the list to edit.\nPress BACK to go back.\nAuthor: Julius Fan\nActivity Version: 1.0</string>
-    <string name="exercises_info">Press ADD EXERCISE to add a new exercise to this routine.\nPress DELETE ROUTINE to delete this routine.\nPress SAVE ROUTINE to save this routine and go back.\nClick on an exercise in the list to edit it.\nAuthor: Julius Fan\nActivity Version: 1.0</string>
+    <string name="routines_info">Press CREATE ROUTINE to create a new routine and add it to the list of routines.\nClick on a routine in the list to edit.\nMaximum of 10 routines.\nPress SAVE to save your routines.\nAuthor: Julius Fan\nActivity Version: 1.0</string>
+    <string name="exercises_info">Press ADD EXERCISE to add a new exercise to this routine.\nPress DELETE ROUTINE to delete this routine.\nMaximum of 10 exercises per routine.\nPress SAVE ROUTINE to save this routine and go back.\nPress START ROUTINE to start your training with this routine.\nClick on an exercise in the list to edit or delete it.\nAuthor: Julius Fan\nActivity Version: 1.0</string>
+
+    <string name="restart_button">RESTART ROUTINE</string>
+    <string name="start_button">START EXERCISE</string>
+    <string name="pause_button">PAUSE</string>
+
+    <string name="label_current_exercise">Current Exercise: </string>
+    <string name="toast_exercise_done">Exercise completed!</string>
+    <string name="toast_routine_done">Routine completed!</string>
+
 </resources>
