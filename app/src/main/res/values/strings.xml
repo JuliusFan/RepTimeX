@@ -51,6 +51,7 @@
     <string name="start_button">START EXERCISE</string>
     <string name="pause_button">PAUSE</string>
 
+    <string name="menu_timer">Timer</string>
     <string name="label_current_exercise">Current Exercise: </string>
     <string name="toast_exercise_done">Exercise completed!</string>
     <string name="toast_routine_done">Routine completed!</string>

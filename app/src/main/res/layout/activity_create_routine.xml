@@ -49,8 +49,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="40dp"
-        android:layout_toStartOf="@id/button_save"
         android:text="@string/delete_routine" />
 
     <Button
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_delete"
-        android:layout_toStartOf="@id/button_save"
+        android:layout_centerInParent="true"
         android:text="@string/button_start" />
 
     <Button
