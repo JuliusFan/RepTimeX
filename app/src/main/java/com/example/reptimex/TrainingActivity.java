@@ -36,4 +36,6 @@ public class TrainingActivity extends AppCompatActivity {
     public void setViewPager(int fragmentNumber){
         mViewPager.setCurrentItem(fragmentNumber);
     }
+
+
 }
