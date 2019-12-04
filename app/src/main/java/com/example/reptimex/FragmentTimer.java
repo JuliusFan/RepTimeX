@@ -21,7 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-public class Fragment1 extends Fragment {
+public class FragmentTimer extends Fragment {
     private Button btnNavFrag1;
     private Button btnNavFrag2;
     private Button btnNavSecondActivity;
@@ -50,7 +50,7 @@ public class Fragment1 extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.fragment1_layout,container,false);
+        view = inflater.inflate(R.layout.fragment_timer,container,false);
         btnNavFrag2 = (Button) view.findViewById(R.id.btnNavFrag2);
         btnNavFrag2.setOnClickListener(new View.OnClickListener() {
             @Override

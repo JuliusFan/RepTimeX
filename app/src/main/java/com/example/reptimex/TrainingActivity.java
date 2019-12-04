@@ -27,8 +27,8 @@ public class TrainingActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager){
         SectionsStatePagerAdapter adapter  = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Fragment1(),"fragment1");
-        adapter.addFragment(new Fragment2(),"fragment2");
+        adapter.addFragment(new FragmentTimer(),"fragment1");
+        adapter.addFragment(new FragmentAbout(),"fragment2");
         viewPager.setAdapter(adapter);
 
     }

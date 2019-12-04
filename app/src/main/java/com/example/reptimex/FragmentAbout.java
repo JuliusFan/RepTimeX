@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-public class Fragment2 extends Fragment {
+public class FragmentAbout extends Fragment {
     private Button btnNavFrag1;
     private Button btnNavSecondActivity;
 
@@ -29,7 +29,7 @@ public class Fragment2 extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment2_layout,container,false);
+        View view = inflater.inflate(R.layout.fragment_about,container,false);
         btnNavFrag1 = (Button) view.findViewById(R.id.btnNavFrag1);
 
         btnNavFrag1.setOnClickListener(new View.OnClickListener() {
