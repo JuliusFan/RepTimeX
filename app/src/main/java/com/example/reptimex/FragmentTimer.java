@@ -97,7 +97,15 @@ public class FragmentTimer extends Fragment {
 
         exercisecount= exerciseArray.size();
 
-        progress.setMax(exercisecount);
+
+        int temp = exercisecount;
+
+        for (int j=0;j<exerciseArray.size();j++){
+            if(exerciseArray.get(j).getBreakDurationMS()>0){
+                temp++;
+            }
+        }
+        progress.setMax(temp);
 
 
         currentExercise.setText(getString(R.string.label_current_exercise)+" "+ current.toString());
