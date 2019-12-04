@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RepTimeX</string>
+    <string name="title_activity_create_routine">Créer une routine</string>
+    <string name="title_activity_routines">Toutes les routines</string>
+    <string name="add_exercise_dialog">Ajouter de l'exercice</string>
+    <string name="delete_routine">Supprimer la routine</string>
+    <string name="save_routine">Sauvegarder la routine</string>
+    <string name="button_back">Retour</string>
+    <string name="button_start">Commencer la routine</string>
+    <string name="label_exercise">Exercice</string>
+    <string name="label_duration">Durée</string>
+    <string name="label_break">Pause</string>
+    <string name="label_weight_dist">Poids/Distance</string>
+    <string name="hint_exercise">Nom de l'exercice</string>
+    <string name="delete_exercise_button">Supprimer</string>
+    <string name="delete_dialog">Supprimer cette routine</string>
+    <string name="DialogYes">D'accord</string>
+    <string name="DialogNo">Annuler</string>
+    <string name="DialogClose">Fermer</string>
+    <string name="UnitSeconds">s</string>
+    <string name="UnitMinutes">m</string>
+    <string name="UnitPounds">lb</string>
+    <string name="UnitKg">kg</string>
+    <string name="UnitKm">km</string>
+    <string name="UnitMetres">m</string>
+    <string name="ToastSave">Routine enregistrée</string>
+    <string name="ToastCreateRoutine">Créer une routine</string>
+    <string name="ToastEmptyExercises">Ajoutez des exercices à cette routine avant de commencer l'entraînement</string>
+    <string name="SnackbarAdd">Exercice Ajouté</string>
+    <string name="SnackbarSaveData">Routines sauvegardée</string>
+    <string-array name="units_time">
+        <item>s</item>
+        <item>m</item>
+    </string-array>
+    <string-array name="units_weight_dist">
+        <item>lb</item>
+        <item>kg</item>
+        <item>m</item>
+        <item>km</item>
+    </string-array>
+    <string name="createRoutine">Créer une routine</string>
+    <string name="cancelTraining">Annuler la formation</string>
+    <string name="routine_name">Nom de routine</string>
+    <string name="all_routines">Toutes les routines</string>
+    <string name="menu_about">À propos</string>
+    <string name="routines_info">Appuyez sur "Créer une routine" pour créer une nouvelle routine et l'ajouter à la liste des routines.\nCliquez sur une routine dans la liste pour la modifier.\nAppuyez sur retour pour revenir en arrière.\nAuteur: Julius Fan\nVersion d'activité: 1.0</string>
+    <string name="exercises_info">Appuyez sur "Ajouter exercice" pour ajouter un nouvel exercice à cette routine.\nAppuyez sur "Supprimer routine" pour supprimer cette routine.\nAppuyez sur "Sauvegarder la routine" pour sauvegarder cette routine et revenir en arrière.\nCliquez sur un exercice dans la liste pour le modifier.\nAuteur: Julius Fan\nVersion d'activité: 1.0</string>
+
+    <string name="restart_button">Routine de redémarrage</string>
+    <string name="start_button">Commencer l'exercice</string>
+    <string name="pause_button">Pause</string>
+
+    <string name="menu_timer">Minuteur</string>
+    <string name="label_current_exercise">Exercice en cours: </string>
+    <string name="toast_exercise_done">Exercise terminé!</string>
+    <string name="toast_routine_done">Routine terminée!</string>
+</resources>
