@@ -255,4 +255,9 @@ public class FragmentTimer extends Fragment {
         countDownText.setText(timelefttext);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        timer.cancel();
+    }
 }
