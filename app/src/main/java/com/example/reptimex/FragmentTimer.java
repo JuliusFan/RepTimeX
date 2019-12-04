@@ -258,6 +258,9 @@ public class FragmentTimer extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        timer.cancel();
+
+        if(isTimerRunning){
+            timer.cancel();
+        }
     }
 }
