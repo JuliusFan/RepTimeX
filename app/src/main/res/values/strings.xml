@@ -8,6 +8,7 @@
     <string name="save_routine">Save Routine</string>
     <string name="button_back">Save</string>
     <string name="button_start">Start Routine</string>
+    <string name="button_start_training">Start</string>
     <string name="label_exercise">Exercise</string>
     <string name="label_duration">Duration</string>
     <string name="label_break">Break</string>
